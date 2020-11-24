@@ -8,7 +8,7 @@ const custController = require('../controllers/custController');
 // customer signs up
 router.post('/signup', custController.createUser, (req, res) => {
   console.log('sign up worked, entered middleware');
-  res.status(200).json('the sign up fucking worked!');
+  res.status(200).json({ newUser: res.locals.newUser });
 });
 
 // customer signs in and cart loads 'get' request

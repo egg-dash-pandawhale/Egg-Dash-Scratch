@@ -26,6 +26,17 @@ custController.createUser = async (req, res, next) => {
       address_street,
       address_zip,
     });
+
+    const responseObj = {
+      first_name: newUser.first_name,
+      last_name: newUser.last_name,
+      email: newUser.email,
+      address_number: newUser.address_number,
+      address_street: newUser.address_street,
+      address_zip: newUser.address_zip,
+    };
+
+    res.locals.newUser = responseObj;
     return next();
   } catch (error) {
     return next({
@@ -36,58 +47,44 @@ custController.createUser = async (req, res, next) => {
       },
     });
   }
-
-  // console.log('this is the req.body for createUser:', req.body);
-  // // const signUp = `SELECT * FROM customers WHERE email='${email}'`;
-  // const signUp = `INSERT INTO customers (id, first_name, last_name, email, password, address_number, address_street, address_zip)
-  // VALUES (nextval('cust_sequence'), '${first_name}', '${last_name}', '${email}', '${password}', '${address_number}', '${address_street}', '${address_zip}' )`;
-  // db.query(signUp)
-  //   .then((data) => {
-  //     console.log(
-  //       'this is the data we get once we insert a user into the DB ',
-  //       data.rows
-  //     );
-  //   })
-  //   .then(next)
-  //   .catch(() => {
-  //     // next(err)
-  //     next({
-  //       log: `custController.createUser: ERROR: Error creating new user.`,
-  //       message: {
-  //         err:
-  //           'Error occurred in custController.createUser. Check server logs for more details.',
-  //       },
-  //     });
-  //   });
 };
 
 // customer signs in and cart loads 'get' request
-custController.verifyCust = (req, res, next) => {
+custController.verifyCust = async (req, res, next) => {
   const { email, password } = req.body;
-  // console.log('this is the request body: ', req.body);
-  const allCusts = `SELECT * FROM customers WHERE email='${email}'`;
-  db.query(allCusts)
-    .then((data) => {
-      // console.log('this is the data from the customer ', data.rows);
-      if (data.rows[0].password === password) {
-        res.locals.isVerified = true;
-        res.locals.custInfo = data.rows;
-        // console.log('this is res.locals with stuff inside', res.locals);
-      } else {
-        res.locals.isVerified = false;
-      }
-    })
-    .then(next)
-    .catch(() => {
-      // next(err)
-      next({
+
+  try {
+    const user = await models.User.findOne({ where: { email: email } });
+
+    if (!user) {
+      return next({
         log: `custController.verifyCust: ERROR: Error getting the customer's information from the database.`,
         message: {
-          err:
-            'Error occurred in custController.verifyCust. Check server logs for more details.',
+          err: 'Wrong username or password!',
         },
       });
+    }
+
+    if (user.dataValues.password !== password) {
+      return next({
+        log: `custController.verifyCust: ERROR: Error getting the customer's information from the database.`,
+        message: {
+          err: 'Wrong username or password!',
+        },
+      });
+    }
+
+    console.log(user.dataValues);
+    return next();
+  } catch (error) {
+    return next({
+      log: `custController.verifyCust: ERROR: Error getting the customer's information from the database.${error}`,
+      message: {
+        err:
+          'Error occurred in custController.verifyCust. Check server logs for more details.',
+      },
     });
+  }
 };
 
 module.exports = custController;
