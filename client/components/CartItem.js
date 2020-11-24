@@ -17,11 +17,23 @@ export default function CartItem(props) {
         </Text>
       </Flex>
       <div className="space"></div>
+      <Button colorScheme="teal" size="xs" onClick={() => {
+        console.log(product);
+        plusOneCartItem(product)
+      }}>
+        Add One
+      </Button>
+      <Button colorScheme="teal" size="xs" onClick={() => {
+        console.log(product);
+        deleteOneCartItem(product)
+      }}>
+        Remove One
+      </Button>
       <Button colorScheme="red" size="xs" onClick={() => {
         console.log(product);
         removeCartItem(product)
       }}>
-        Remove
+        Delete
       </Button>
       <div className="space"></div>
       <div className="space"></div>
