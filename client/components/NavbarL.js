@@ -44,7 +44,9 @@ export default function NavbarL(props) {
   for (let i = 0; i < cart.length; i++) {
     cartArray.push(<CartItem
       key={i}
+      // this needs to be dynamic
       quantity={cart[i][0]}
+      // here's another but of cart-array
       product={cart[i][1]}
       price={cart[i][2]}
       description={cart[i][3]}
