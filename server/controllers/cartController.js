@@ -4,7 +4,7 @@ const { models } = require('../../db/db');
 const cartController = {};
 
 // user signs in and cart loads 'get' request
-cartController.getProductsUserCart = async (req, res, next) => {
+cartController.getUserCart = async (req, res, next) => {
   const { id } = req.body;
 
   try {
@@ -25,17 +25,17 @@ cartController.getProductsUserCart = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `cartController.getProductsUserCart: ERROR: Error adding product to cart. ${error}`,
+      log: `cartController.getUserCart: ERROR: Error adding product to cart. ${error}`,
       message: {
         err:
-          'Error occurred in cartController.getProductsUserCart. Check server logs for more details.',
+          'Error occurred in cartController.getUserCart. Check server logs for more details.',
       },
     });
   }
 };
 
 // user adds item to cart = 'post' request
-cartController.addProductsUserCart = async (req, res, next) => {
+cartController.updateUserCart = async (req, res, next) => {
   const { customer_id, product_id, quantity } = req.body;
   const UserId = customer_id;
   const ProductId = product_id;
@@ -56,7 +56,11 @@ cartController.addProductsUserCart = async (req, res, next) => {
     });
     // if we don't find the item in the Cart table, insert it into the table
     if (!item) {
-      const newlyAddedItem = await models.Cart.create({ UserId, ProductId, quantity });
+      const newlyAddedItem = await models.Cart.create({
+        UserId,
+        ProductId,
+        quantity,
+      });
     } else if (quantity > 0) {
       // otherwise, update the row with the new quantity from the request body
       const updatedItem = await models.Cart.update(
@@ -76,25 +80,42 @@ cartController.addProductsUserCart = async (req, res, next) => {
         where: {
           UserId,
           ProductId,
-        }
+        },
       });
     }
     return next();
   } catch (error) {
     return next({
-      log: `cartController.addProductsUserCart: ERROR: Error adding product to cart. ${error}`,
+      log: `cartController.updateUserCart: ERROR: Error adding product to cart. ${error}`,
       message: {
         err:
-          'Error occurred in cartController.addProductsUserCart. Check server logs for more details.',
+          'Error occurred in cartController.updateUserCart. Check server logs for more details.',
       },
     });
   }
 };
 
 // user deletes item from cart - 'delete' request
-cartController.deleteProductsUserCart = (req, res, next) => {
+cartController.deleteUserCart = async (req, res, next) => {
+  const { customer_id } = req.body;
+  const UserId = customer_id;
 
+  try {
+    await models.Cart.destroy({
+      where: {
+        UserId,
+      },
+    });
+    return next();
+  } catch (error) {
+    return next({
+      log: `cartController.deleteUserCart: ERROR: Error deleting all products from cart. ${error}`,
+      message: {
+        err:
+          'Error occurred in cartController.deleteUserCart: Check server logs for more details.',
+      },
+    });
+  }
 };
-
 
 module.exports = cartController;
