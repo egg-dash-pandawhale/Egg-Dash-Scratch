@@ -3,24 +3,20 @@ const { models } = require('../../db/db');
 
 const productsController = {};
 
-productsController.getAllProducts = (req, res, next) => {
-  const getProducts = `SELECT * FROM products`;
-
-  db.query(getProducts)
-    .then((data) => {
-      console.log('this is the data from the products table ', data.rows);
-      res.locals.products = data.rows;
-    })
-    .then(next)
-    .catch(() => {
-      next({
-        log: `productsController.createUser: ERROR: Error pulling data from the DB.`,
-        message: {
-          err:
-            'Error occurred in productController.getAllProducts. Check server logs for more details.',
-        },
-      });
+productsController.getAllProducts = async (req, res, next) => {
+  try {
+    const allProducts = await models.Product.findAll();
+    res.locals.products = allProducts;
+    return next();
+  } catch (error) {
+    return next({
+      log: `productsController.getAllProducts: ERROR: Error while getting all products. ${error}`,
+      message: {
+        err:
+          'Error occurred in productController.getAllProducts. Check server logs for more details.',
+      },
     });
+  }
 };
 
 // create new controller, adding a new product to product table
