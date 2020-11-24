@@ -10,11 +10,11 @@ const product = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description : {
+    description: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    pictureurl : {
+    pictureurl: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -25,7 +25,7 @@ const product = (sequelize, DataTypes) => {
     farm_id: {
       type: DataTypes.STRING,
       allowNull: false,
-    }
+    },
   });
 
   Product.associate = (models) => {

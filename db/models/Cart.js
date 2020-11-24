@@ -10,14 +10,14 @@ const cart = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    customer_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    product_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+    // customer_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
+    // product_id: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    // },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,

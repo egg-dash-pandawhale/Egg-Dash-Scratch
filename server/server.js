@@ -43,7 +43,7 @@ app.use((err, req, res, next) => {
 });
 
 // start server
-instance.sync().then(() =>{
+instance.sync().then(() => {
   app.listen(port, () => {
     console.log(`Server started on port ${port}.`);
   });
