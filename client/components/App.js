@@ -127,39 +127,6 @@ function App() {
     setMap({ toggled: checker });
   }
 
-// REMOVE CART ITEM DOES THIS:
-  // let newTotal = state.total;
-  // let newCart = [];
-  // let removedOne = false;
-  // for (let i = 0; i < state.cart.length; i++) {
-  //   if (state.cart[i][1] !== productName) {
-  //     newCart.push(state.cart[i]);
-  //   } else {
-  //     if (removedOne) {
-  //       newCart.push(state.cart[i]);
-  //     } else {
-  //       console.log('newTotal', newTotal);
-  //       console.log('state.cart[i][2]',state.cart[i][2]);
-  //       newTotal -= state.cart[i][2];
-  //       console.log('should be 0', newTotal);
-  //       if (newTotal < .01) newTotal = 0;
-  //       if (state.cart[i][0] !== 1) {
-  //         let currentQuant = state.cart[i][0];
-  //         currentQuant -= 1;
-  //         state.cart[i][0] = currentQuant;
-  //         newCart.push(state.cart[i]);
-  //       }
-  //       removedOne = true;
-  //     }
-  //   }
-  // }
-  // console.log(JSON.stringify(newCart));
-  // console.log(state.total);
-  // setState({
-  //   ...state,
-  //   cart: newCart,
-  //   total: newTotal
-  // })
 
   function addToCart(quantity, product, price, description, productId) {
     let currentCart = state.cart;
