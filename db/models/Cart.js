@@ -1,25 +1,35 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../db');
+// const { DataTypes } = require('sequelize');
+// const sequelize = require('../db');
+// const User = require('./User');
 
-const User = sequelize.define('Cart', {
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
-  },
-  customer_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  product_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-});
+const cart = (sequelize, DataTypes) => {
+  const Cart = sequelize.define('Cart', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    customer_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    product_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  });
 
-module.exports = User;
+  Cart.associate = (models) => {
+    Cart.belongsTo(models.User);
+    Cart.belongsTo(models.Product);
+  };
+
+  return Cart;
+};
+
+module.exports = cart;

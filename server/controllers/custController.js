@@ -1,5 +1,5 @@
 const db = require('../../db/db.js');
-const User = require('../../db/models/User');
+const { models } = require('../../db/db');
 
 const custController = {};
 
@@ -17,8 +17,7 @@ custController.createUser = async (req, res, next) => {
   } = req.body;
 
   try {
-    await User.sync();
-    const newUser = await User.create({
+    const newUser = await models.User.create({
       first_name,
       last_name,
       email,
@@ -30,7 +29,7 @@ custController.createUser = async (req, res, next) => {
     return next();
   } catch (error) {
     return next({
-      log: `custController.createUser: ERROR: Error creating new user.`,
+      log: `custController.createUser: ERROR: Error creating new user.${error}`,
       message: {
         err:
           'Error occurred in custController.createUser. Check server logs for more details.',

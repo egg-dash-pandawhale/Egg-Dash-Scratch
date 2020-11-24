@@ -6,24 +6,9 @@ const app = express();
 const custRouter = require('./routes/cust');
 const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
-// const User = require('../db/models/User');
 
-// const f = async () => {
-//   try {
-//     await User.sync({force: true});
-//     const jane = await User.create(
-//       {first_name: "Jane",
-//       last_name: "Doe",
-//       email: "test@test.com",
-//       password: "test",
-//       address_number: 100,
-//       address_street: "asd",
-//       address_zip: 12345 });
-//   } catch (error) {
-//     console.log('FIND THE ERROR HERE!!!!!!!!!!!!', error);
-//   }
-// };
-// f();
+const { models } = require('../db/db');
+const { instance } = require('../db/db');
 
 const port = 3000;
 
@@ -58,8 +43,10 @@ app.use((err, req, res, next) => {
 });
 
 // start server
-app.listen(port, () => {
-  console.log(`Server started on port ${port}.`);
+instance.sync().then(() =>{
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}.`);
+  });
 });
 
 module.exports = app;

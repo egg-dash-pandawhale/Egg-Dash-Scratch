@@ -1,16 +1,24 @@
-const { Sequelize } = require('sequelize');
+const Sequelize = require('sequelize');
+const user = require('./models/User');
+const cart = require('./models/Cart');
+const product = require('./models/Product');
 
 const PG_URI =
   'postgres://ifodztro:kx-XAz8N70wNlxhnkewL4sdA2-l5ALMR@suleiman.db.elephantsql.com:5432/ifodztro';
 
 // create a new pool here using the connection string above
-const sequelize = new Sequelize(PG_URI);
+const instance = new Sequelize(PG_URI);
 
-// Adding some notes about the database here will be helpful for future you or other developers.
-// Schema for the database can be found below:
-// https://github.com/CodesmithLLC/unit-10SB-databases/blob/master/docs/images/schema.png?raw=true
+const models = {
+  User: user(instance, Sequelize),
+  Cart: cart(instance, Sequelize),
+  Product: product(instance, Sequelize),
+};
 
-// We export an object that contains a property called query,
-// which is a function that returns the invocation of pool.query() after logging the query
-// This will be required in the controllers to be the access point to the database
-module.exports = sequelize;
+Object.keys(models).forEach((key) => {
+  if ('associate' in models[key]) {
+    models[key].associate(models);
+  }
+});
+
+module.exports = { instance, models };
