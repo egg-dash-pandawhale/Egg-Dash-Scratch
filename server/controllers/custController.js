@@ -27,16 +27,6 @@ custController.createUser = async (req, res, next) => {
       address_zip,
     });
 
-    const responseObj = {
-      first_name: newUser.first_name,
-      last_name: newUser.last_name,
-      email: newUser.email,
-      address_number: newUser.address_number,
-      address_street: newUser.address_street,
-      address_zip: newUser.address_zip,
-    };
-
-    res.locals.newUser = responseObj;
     return next();
   } catch (error) {
     return next({
@@ -74,7 +64,18 @@ custController.verifyCust = async (req, res, next) => {
       });
     }
 
-    console.log(user.dataValues);
+    const responseObj = {
+      id: user.id,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      address_number: user.address_number,
+      address_street: user.address_street,
+      address_zip: user.address_zip,
+    };
+
+    res.locals.user = responseObj;
+
     return next();
   } catch (error) {
     return next({

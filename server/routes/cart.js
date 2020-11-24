@@ -6,7 +6,7 @@ const cartController = require('../controllers/cartController');
 
 // user signs in and cart loads 'get' request
 
-router.get('/:email', cartController.getProductsUserCart, (req, res) => {
+router.get('/', cartController.getProductsUserCart, (req, res) => {
   res.status(200).json(res.locals.userCart);
 });
 
