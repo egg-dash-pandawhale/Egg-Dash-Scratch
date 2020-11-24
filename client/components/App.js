@@ -26,10 +26,17 @@ function App() {
     toggled: false,
   });
 
+  // refactor: instead of new cart items being an array -- we make them objects
   function instantiateCart(cartObj) {
     let currentCart = state.cart;
     let newcartItem = [];
+    // const newCartItem = {};
     newcartItem.push( 1, cartObj.name, cartObj.price, cartObj.description, cartObj.productId)
+    // newCartItem.name = cartObj.name;
+    // newCartItem.price = cartObj.price;
+    // newCartItem.description = cartObj.description;
+    // newCartItem.productId = cartObj.productId;
+
     currentCart.push(newcartItem);
     setState ({
       ...state,
@@ -120,19 +127,33 @@ function App() {
     setMap({ toggled: checker });
   }
 
+
   function addToCart(quantity, product, price, description, productId) {
-    let current = state.cart;
-    current.push([quantity, product, price, description, productId]);
+    let currentCart = state.cart;
     let newTotal = 0;
 
-    for (let i = 0; i < current.length; i++) {
-      newTotal += current[i][0] * current[i][2];
-      console.log('quant:', current[i][0]);
-      console.log('price:', current[i][2]);
+    let productIdObj = {};
+    for (let i = 0; i < currentCart.length; i++) {
+      // each key value pair in productIdObject is the productId of products already in the cart by the index where the product is inside the cart
+      productIdObj[currentCart[i][4]] = i;
+    }
+    // if the productId argument is inside the productIdObject, meaning it's already inside the shopping cart,
+    if (productId in productIdObj) {
+      // productIdObj[productId] should return index of where the productId product is in within currentCart.
+      // find the quantity of the product that already exists in current cart and increment by quantity argument.
+      currentCart[productIdObj[productId]][0] = currentCart[productIdObj[productId]][0] + quantity;
+    } else {
+      // if the productid isnt already in there, push the brand new item into currentCart
+      currentCart.push([quantity, product, price, description, productId]);
+    }
+    
+    for (let i = 0; i < currentCart.length; i++) {
+      // this gets a new subtotal per item by multiplying quantity and price
+      newTotal += currentCart[i][0] * currentCart[i][2];
     }
     setState({
       ...state,
-      cart: current,
+      cart: currentCart,
       total: newTotal
     });
   }

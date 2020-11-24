@@ -29,10 +29,8 @@ export default function NavbarL(props) {
   const btnRef = React.useRef();
 
   let { total, emptyCart } = props;
-  if (String(total).indexOf('.') !== -1) {
-    let newTotal = String(total).slice(0, String(total).indexOf('.') + 3);
-    total = Number(newTotal);
-  }
+  // format total to always show two decimal places
+  total = total.toFixed(2);
 
   const toast = useToast();
 
@@ -46,7 +44,9 @@ export default function NavbarL(props) {
   for (let i = 0; i < cart.length; i++) {
     cartArray.push(<CartItem
       key={i}
+      // this needs to be dynamic
       quantity={cart[i][0]}
+      // here's another but of cart-array
       product={cart[i][1]}
       price={cart[i][2]}
       description={cart[i][3]}
@@ -83,8 +83,8 @@ export default function NavbarL(props) {
                   <Badge colorScheme='red'>Subtotal </Badge>${total}
                   </Flex>
                 </Box>
-                <Button variant="outline" mr={3} onClick={onClose}>
-                  Cancel
+                <Button variant="outline" mr={3} >
+                  Empty Cart
                 </Button>
                 <Button color="blue" onClick={() => {
 
