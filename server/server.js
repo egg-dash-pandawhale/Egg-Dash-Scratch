@@ -7,7 +7,6 @@ const custRouter = require('./routes/cust');
 const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
 
-const { models } = require('../db/db');
 const { instance } = require('../db/db');
 
 const port = 3000;

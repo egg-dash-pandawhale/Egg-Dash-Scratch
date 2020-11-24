@@ -13,7 +13,6 @@ productsController.getAllProducts = (req, res, next) => {
     })
     .then(next)
     .catch(() => {
-      // next(err)
       next({
         log: `productsController.createUser: ERROR: Error pulling data from the DB.`,
         message: {

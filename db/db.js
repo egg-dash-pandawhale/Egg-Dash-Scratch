@@ -6,7 +6,6 @@ const product = require('./models/Product');
 const PG_URI =
   'postgres://ifodztro:kx-XAz8N70wNlxhnkewL4sdA2-l5ALMR@suleiman.db.elephantsql.com:5432/ifodztro';
 
-// create a new pool here using the connection string above
 const instance = new Sequelize(PG_URI);
 
 const models = {
