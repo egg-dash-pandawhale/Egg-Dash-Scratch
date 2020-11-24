@@ -1,12 +1,10 @@
-const { Pool } = require('pg');
+const { Sequelize } = require('sequelize');
 
 const PG_URI =
-  'postgres://gvajvsqt:mZb_UBRu49_2Qtw3KYzaJ7CYJT7Q-5sP@rajje.db.elephantsql.com:5432/gvajvsqt';
+  'postgres://ifodztro:kx-XAz8N70wNlxhnkewL4sdA2-l5ALMR@suleiman.db.elephantsql.com:5432/ifodztro';
 
 // create a new pool here using the connection string above
-const pool = new Pool({
-  connectionString: PG_URI,
-});
+const sequelize = new Sequelize(PG_URI);
 
 // Adding some notes about the database here will be helpful for future you or other developers.
 // Schema for the database can be found below:
@@ -15,9 +13,4 @@ const pool = new Pool({
 // We export an object that contains a property called query,
 // which is a function that returns the invocation of pool.query() after logging the query
 // This will be required in the controllers to be the access point to the database
-module.exports = {
-  query: (text, params, callback) => {
-    console.log('executed query', text);
-    return pool.query(text, params, callback);
-  },
-};
+module.exports = sequelize;

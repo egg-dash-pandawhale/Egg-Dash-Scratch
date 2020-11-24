@@ -6,6 +6,24 @@ const app = express();
 const custRouter = require('./routes/cust');
 const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
+// const User = require('../db/models/User');
+
+// const f = async () => {
+//   try {
+//     await User.sync({force: true});
+//     const jane = await User.create(
+//       {first_name: "Jane",
+//       last_name: "Doe",
+//       email: "test@test.com",
+//       password: "test",
+//       address_number: 100,
+//       address_street: "asd",
+//       address_zip: 12345 });
+//   } catch (error) {
+//     console.log('FIND THE ERROR HERE!!!!!!!!!!!!', error);
+//   }
+// };
+// f();
 
 const port = 3000;
 
@@ -34,7 +52,7 @@ app.use((err, req, res, next) => {
     status: 400,
     message: { err: 'An error occurred' },
   };
-  const errorObj = Object.assign({}, defaultErr, err);
+  const errorObj = { ...defaultErr, ...err };
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });

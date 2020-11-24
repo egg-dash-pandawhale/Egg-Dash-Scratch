@@ -1,9 +1,10 @@
 const db = require('../../db/db.js');
+const User = require('../../db/models/User');
 
 const custController = {};
 
 // new customer signs up
-custController.createUser = (req, res, next) => {
+custController.createUser = async (req, res, next) => {
   // const { email, password } = req.body;
   const {
     first_name,
@@ -14,28 +15,51 @@ custController.createUser = (req, res, next) => {
     address_street,
     address_zip,
   } = req.body;
-  console.log('this is the req.body for createUser:', req.body);
-  // const signUp = `SELECT * FROM customers WHERE email='${email}'`;
-  const signUp = `INSERT INTO customers (id, first_name, last_name, email, password, address_number, address_street, address_zip)
-  VALUES (nextval('cust_sequence'), '${first_name}', '${last_name}', '${email}', '${password}', '${address_number}', '${address_street}', '${address_zip}' )`;
-  db.query(signUp)
-    .then((data) => {
-      console.log(
-        'this is the data we get once we insert a user into the DB ',
-        data.rows
-      );
-    })
-    .then(next)
-    .catch(() => {
-      // next(err)
-      next({
-        log: `custController.createUser: ERROR: Error creating new user.`,
-        message: {
-          err:
-            'Error occurred in custController.createUser. Check server logs for more details.',
-        },
-      });
+
+  try {
+    await User.sync();
+    const newUser = await User.create({
+      first_name,
+      last_name,
+      email,
+      password,
+      address_number,
+      address_street,
+      address_zip,
     });
+    return next();
+  } catch (error) {
+    return next({
+      log: `custController.createUser: ERROR: Error creating new user.`,
+      message: {
+        err:
+          'Error occurred in custController.createUser. Check server logs for more details.',
+      },
+    });
+  }
+
+  // console.log('this is the req.body for createUser:', req.body);
+  // // const signUp = `SELECT * FROM customers WHERE email='${email}'`;
+  // const signUp = `INSERT INTO customers (id, first_name, last_name, email, password, address_number, address_street, address_zip)
+  // VALUES (nextval('cust_sequence'), '${first_name}', '${last_name}', '${email}', '${password}', '${address_number}', '${address_street}', '${address_zip}' )`;
+  // db.query(signUp)
+  //   .then((data) => {
+  //     console.log(
+  //       'this is the data we get once we insert a user into the DB ',
+  //       data.rows
+  //     );
+  //   })
+  //   .then(next)
+  //   .catch(() => {
+  //     // next(err)
+  //     next({
+  //       log: `custController.createUser: ERROR: Error creating new user.`,
+  //       message: {
+  //         err:
+  //           'Error occurred in custController.createUser. Check server logs for more details.',
+  //       },
+  //     });
+  //   });
 };
 
 // customer signs in and cart loads 'get' request
