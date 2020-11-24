@@ -57,7 +57,7 @@ cartController.addProductsUserCart = async (req, res, next) => {
     // if we don't find the item in the Cart table, insert it into the table
     if (!item) {
       const newlyAddedItem = await models.Cart.create({ UserId, ProductId, quantity });
-    } else {
+    } else if (quantity > 0) {
       // otherwise, update the row with the new quantity from the request body
       const updatedItem = await models.Cart.update(
         { quantity },
@@ -71,6 +71,13 @@ cartController.addProductsUserCart = async (req, res, next) => {
       );
       // uncomment the line below to see the updated item
       // console.log(updatedItem[1][0].dataValues);
+    } else {
+      await models.Cart.destroy({
+        where: {
+          UserId,
+          ProductId,
+        }
+      });
     }
     return next();
   } catch (error) {
@@ -85,11 +92,9 @@ cartController.addProductsUserCart = async (req, res, next) => {
 };
 
 // user deletes item from cart - 'delete' request
-cartController.deleteProductsUserCart = (req, res, next) => {};
+cartController.deleteProductsUserCart = (req, res, next) => {
 
-// user modifies quantity in cart - 'put' request
+};
 
-// TO BE REMOVED, ABOVE FUNCTION WILL UPSERT CART ON PUT REQUEST
-cartController.updateItemUserCart = (req, res, next) => {};
 
 module.exports = cartController;
