@@ -10,15 +10,11 @@ import Markets from "./Markets";
 
 function App() {
   const defaultState = {
-    verified: false,
+    user: {},
     cart: [],
-    address_number: '',
-    address_street: '',
-    address_zip: '',
     total: 0,
-    id: 0,
-    email: ''
-  };
+    isLoggedIn: false
+  }
 
   const [state, setState] = useState(defaultState);
   console.log('this is state: ', state);
@@ -48,7 +44,7 @@ function App() {
   function unAuth() {
     setState({
       ...state,
-      verified: false
+      isLoggedIn: false
     })
   }
 
@@ -174,7 +170,7 @@ function App() {
     if (data) {
       setState({
         ...state,
-        verified: true,
+        isLoggedIn: true,
         id: data.user.id,
         email: username,
       });
@@ -219,7 +215,7 @@ function App() {
     console.log("this is data from Signup:", data);
     setState({
       ...state,
-      verified: true,
+      isLoggedIn: true,
       address_number: addNum,
       address_street: addSt,
       address_zip: addZip,
@@ -229,7 +225,7 @@ function App() {
 
   return (
     <div>
-      {state.verified ? (
+      {state.isLoggedIn ? (
         <Switch>
           <Route
             path="/"
