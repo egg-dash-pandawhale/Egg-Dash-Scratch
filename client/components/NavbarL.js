@@ -30,7 +30,6 @@ export default function NavbarL(props) {
 
   let { total, emptyCart } = props;
   // format total to always show two decimal places
-  total = total.toFixed(2);
 
   const toast = useToast();
 

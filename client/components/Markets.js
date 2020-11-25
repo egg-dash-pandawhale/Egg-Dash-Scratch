@@ -37,8 +37,14 @@ export default function Markets(props) {
       };
       const response = await fetch(`/cart/${id}`, request);
       const data = await response.json();
-      console.log('this is data from cart login:', data);
-      props.setState({...props.state, cart: data})
+      const sum = data.reduce((acc,cur) => {
+        acc += cur.quantity * cur.Product.price;
+        return acc;
+      }, 0);
+      const total = parseFloat(sum).toFixed(2);
+
+      console.log('Total for cart: ', total)
+      props.setState({...props.state, cart: data, total})
     }
     cart();
   }, [props.state.user.id]);
