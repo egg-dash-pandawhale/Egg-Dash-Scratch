@@ -59,6 +59,7 @@ function App() {
   }
 
   async function updateCart(customer_id, product_id, quantity) {
+    console.log("FROM updateCart: ", customer_id, product_id, quantity)
     try {
       const res = await fetch('/cart', {
         method: "PUT",
