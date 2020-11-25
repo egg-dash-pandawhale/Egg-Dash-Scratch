@@ -12,7 +12,7 @@ router.post('/signup', custController.createUser, (req, res) => {
 
 // customer signs in and cart loads 'get' request
 router.post('/login', custController.verifyCust, (req, res) => {
-  res.status(200).json({ user: res.locals.user });
+  res.status(200).json(res.locals.user);
 });
 
 // customer deletes their login (Stretch feature)

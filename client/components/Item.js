@@ -61,7 +61,6 @@ export default function Item({ addToCart, productName, productDescription, produ
   const toast = useToast();
 
   function clicked() {
-
     addToCart(state.quantity, state.productName, state.price, state.description, state.productId);
     return;
   }
