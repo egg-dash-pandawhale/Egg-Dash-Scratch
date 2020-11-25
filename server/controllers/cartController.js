@@ -5,7 +5,7 @@ const cartController = {};
 
 // user signs in and cart loads 'get' request
 cartController.getUserCart = async (req, res, next) => {
-  const { id } = req.body;
+  const { id } = req.params;
 
   try {
     // go through the cart table and find all rows where the UserId column

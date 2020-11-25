@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import Item from "./Item";
 export default function Markets(props) {
-  const { version, addToCart, instantiateCart, email } = props;
+  const { version, addToCart, instantiateCart, id } = props;
 
   const defaultState = {
     products: []
@@ -33,12 +33,13 @@ export default function Markets(props) {
   const [state, setState] = useState(defaultState);
 
   useEffect(() => {
+    console.log(id);
     async function cart() {
       const request = {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       };
-      const response = await fetch(`/cart/${email}`, request);
+      const response = await fetch(`/cart/${id}`, request);
       const data = await response.json();
       console.log('this is data from cart login:', data);
       for (let i = 0; i < data.length; i++) {

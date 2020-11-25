@@ -16,11 +16,12 @@ function App() {
     address_street: '',
     address_zip: '',
     total: 0,
-    id: '',
+    id: 0,
     email: ''
   };
 
   const [state, setState] = useState(defaultState);
+  console.log('this is state: ', state);
 
   const [map, setMap] = useState({
     toggled: false,
@@ -167,14 +168,14 @@ function App() {
     };
     const response = await fetch("/cust/login", request);
     const data = await response.json();
-    console.log("this is data:", data);
+    console.log("this is data from login:", data);
     let toReturn = false;
 
     if (data) {
       setState({
         ...state,
         verified: true,
-        id: data.custInfo[0].id,
+        id: data.user.id,
         email: username,
       });
       toReturn = true;
@@ -215,7 +216,7 @@ function App() {
     };
     const response = await fetch('/cust/signup', request);
     const data = await response.json();
-    console.log("this is data:", data);
+    console.log("this is data from Signup:", data);
     setState({
       ...state,
       verified: true,
@@ -244,7 +245,7 @@ function App() {
                   ) : (
                     <div>
                       <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
-                      <Markets version={false} addToCart={addToCart} email={state.email} instantiateCart={instantiateCart}/>
+                      <Markets version={false} addToCart={addToCart} id={state.id} instantiateCart={instantiateCart}/>
                     </div>
                   )}
                 </div>

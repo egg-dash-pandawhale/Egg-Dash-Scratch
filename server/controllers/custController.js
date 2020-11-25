@@ -42,7 +42,7 @@ custController.createUser = async (req, res, next) => {
 // customer signs in and cart loads 'get' request
 custController.verifyCust = async (req, res, next) => {
   const { email, password } = req.body;
-
+  
   try {
     const user = await models.User.findOne({ where: { email: email } });
 
