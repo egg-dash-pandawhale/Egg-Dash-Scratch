@@ -47,23 +47,6 @@ export default function NavbarL(props) {
 
   console.log(cartArray)
 
-  // for (let i = 0; i < cart.length; i++) {
-  //   cartArray.push(<CartItem
-  //     key={i}
-  //     // this needs to be dynamic
-  //     quantity={cart[i][0]}
-  //     // here's another but of cart-array
-  //     product={cart[i][1]}
-  //     price={cart[i][2]}
-  //     description={cart[i][3]}
-  //     removeCartItem ={removeCartItem}
-  //   />)
-  // }
-
-
-
-  //quantity, product, price, description
-
   return (
     <div className="navbarL">
       <>
