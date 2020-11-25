@@ -66,9 +66,17 @@ function App() {
         body: JSON.stringify({ customer_id, product_id, quantity }),
       })
       const data = await res.json()
+      // func for summing up price, may want to extract since 
+      // this is called also in markets's useeffect
+      const sum = data.reduce((acc,cur) => {
+        acc += cur.quantity * cur.Product.price;
+        return acc;
+      }, 0);
+      const total = parseFloat(sum).toFixed(2);
       setState({
         ...state,
         cart: data,
+        total,
       });
       console.log('FROM updateCart', data)
     } catch(e) {
