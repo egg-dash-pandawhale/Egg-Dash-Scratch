@@ -50,18 +50,18 @@ export default function Markets(props) {
   }, [props.state.user.id]);
 
   useEffect(()=> {
-    async function me() {
+    async function fetchProducts() {
       const request = {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       };
       const response = await fetch("/products", request);
       const data = await response.json();
-      console.log('from MEEE', data)
+      console.log('from fetchProducts', data)
 
       setStore(data)
     }
-    me();
+    fetchProducts();
   }, [])
 
 
