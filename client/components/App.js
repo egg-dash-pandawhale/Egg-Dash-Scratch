@@ -111,12 +111,9 @@ function App() {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ customer_id, product_id, quantity }),
-    })
-    setState({
-      ...state,
-      cart: currentCart,
-      total: newTotal
-    });
+    }).then(response => response.json())
+    .then(data => console.log(data))
+    .catch(e=>console.log(e))
   }
 
   // This will be async.

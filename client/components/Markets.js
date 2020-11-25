@@ -60,7 +60,7 @@ export default function Markets(props) {
 
 
   const itemArr = store.map(e=>{
-    return <Item key={e.id} addToCart={addToCart} productName={e.name} productDescription={e.description} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
+    return <Item key={e.id} addToCart={addToCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
   })
 
   return (
