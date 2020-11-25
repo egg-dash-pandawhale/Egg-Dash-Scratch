@@ -55,6 +55,7 @@ cartController.updateUserCart = async (req, res, next) => {
         ProductId,
       },
     });
+    console.log('item FOUND', item)
     // if we don't find the item in the Cart table, insert it into the table
     if (!item) {
       const newlyAddedItem = await models.Cart.create({
@@ -66,7 +67,7 @@ cartController.updateUserCart = async (req, res, next) => {
     } else if (quantity > 0) {
       // otherwise, update the row with the new quantity from the request body
       const updatedItem = await models.Cart.update(
-        { quantity },
+        { quantity: quantity + item.quantity },
         {
           where: {
             UserId,
