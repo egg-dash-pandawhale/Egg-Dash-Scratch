@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import Item from "./Item";
 export default function Markets(props) {
-  const { version, addToCart, id } = props;
+  const { version, updateCart, id } = props;
 
   const [store, setStore] = useState([]);
   console.log('store from markets', store);
@@ -37,30 +37,36 @@ export default function Markets(props) {
       };
       const response = await fetch(`/cart/${id}`, request);
       const data = await response.json();
-      console.log('this is data from cart login:', data);
-      props.setState({...props.state, cart: data})
+      const sum = data.reduce((acc,cur) => {
+        acc += cur.quantity * cur.Product.price;
+        return acc;
+      }, 0);
+      const total = parseFloat(sum).toFixed(2);
+
+      console.log('Total for cart: ', total)
+      props.setState({...props.state, cart: data, total})
     }
     cart();
   }, [props.state.user.id]);
 
   useEffect(()=> {
-    async function me() {
+    async function fetchProducts() {
       const request = {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       };
       const response = await fetch("/products", request);
       const data = await response.json();
-      console.log('from MEEE', data)
+      console.log('from fetchProducts', data)
 
       setStore(data)
     }
-    me();
+    fetchProducts();
   }, [])
 
 
   const itemArr = store.map(e=>{
-    return <Item key={e.id} addToCart={addToCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
+    return <Item key={e.id} updateCart={updateCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
   })
 
   return (

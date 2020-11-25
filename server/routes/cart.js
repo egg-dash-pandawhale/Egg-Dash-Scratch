@@ -11,8 +11,8 @@ router.get('/:id', cartController.getUserCart, (req, res) => {
 });
 
 // user updates item to cart - 'put' request
-router.put('/', cartController.updateUserCart, (req, res) => {
-  res.sendStatus(200);
+router.put('/', cartController.updateUserCart, cartController.getUserCart, (req, res) => {
+  res.status(200).json(res.locals.userCart);
 });
 
 // // user deletes all items from cart - 'delete' request

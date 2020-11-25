@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Menu,
   MenuButton,
@@ -28,24 +28,17 @@ export default function NavbarL(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
-  let { total, emptyCart } = props;
-  // format total to always show two decimal places
-  total = total.toFixed(2);
+  let { emptyCart } = props;
 
   const toast = useToast();
 
-
-
-
-  // const [subtotal, changeSubtotal] = useState('0.00');
-  const { toggled, cart, removeCartItem, unAuth} = props;
-  // const cartArray = [];
+  const { toggled, total, cart, unAuth, updateCart, state} = props;
 
   const cartArray = cart.map((e, i)=>{
-    return <CartItem key={i} quantity={e.quantity} product={e.Product.name} price={e.Product.price} description={e.Product.description} removeCartItem={removeCartItem}></CartItem>
+    return <CartItem key={e.Product.id} quantity={e.quantity} product={e.Product.name} id={e.Product.id} price={e.Product.price} description={e.Product.description} state={state} updateCart={updateCart}></CartItem>
   })
 
-  console.log(cartArray)
+  console.log('Cart from NavbarL: ', cartArray)
 
   return (
     <div className="navbarL">
