@@ -23,34 +23,22 @@ function App() {
     toggled: false,
   });
 
-  function unAuth() {
-    setState({
-      ...state,
-      isLoggedIn: false
-    })
-  }
 
-  function emptyCart() {
+  async function emptyCart() {
     setState({
       ...state,
       cart: [],
       total: 0
+    });
+    await fetch('/cart', {
+      method: 'DELETE',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({customer_id: state.user.id})
     })
   }
 
-  async function logOut() {
-    for (let i = 0; i < cart.length; i++) {
-      let quant = cart[i][0];
-      let product = cart[i][1];
-      let userId = state.id;
-      const request = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product, quant, userId }),
-      };
-      const response = await fetch("/", request);
-      const data = await response.json();
-    }
+  function logout() {
+    setState(defaultState);
   }
 
   function toggled() {
@@ -97,7 +85,7 @@ function App() {
     console.log("this is data from login:", data);
     let toReturn = false;
 
-    if (data) {
+    if (!data.err) {
       setState({
         ...state,
         user: data,
@@ -163,12 +151,12 @@ function App() {
                 <div>
                   {map.toggled ? (
                     <div>
-                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} unAuth={unAuth}/>
+                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} logout={logout} emptyCart={emptyCart} />
                       <Markets version={true} state={state} id={state.user.id} setState={setState}/>
                     </div>
                   ) : (
                     <div>
-                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} unAuth={unAuth} updateCart={updateCart} state={state}/>
+                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} logout={logout} emptyCart={emptyCart} updateCart={updateCart} state={state}/>
                       <Markets version={false} updateCart={updateCart} id={state.user.id} state={state} setState={setState}/>
                     </div>
                   )}

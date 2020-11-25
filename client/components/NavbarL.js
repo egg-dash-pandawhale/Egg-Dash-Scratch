@@ -32,7 +32,7 @@ export default function NavbarL(props) {
 
   const toast = useToast();
 
-  const { toggled, total, cart, unAuth, updateCart, state} = props;
+  const { toggled, total, cart, updateCart, state, logout} = props;
 
   const cartArray = cart.map((e, i)=>{
     return <CartItem key={e.Product.id} quantity={e.quantity} product={e.Product.name} id={e.Product.id} price={e.Product.price} description={e.Product.description} state={state} updateCart={updateCart}></CartItem>
@@ -66,7 +66,7 @@ export default function NavbarL(props) {
                   <Badge colorScheme='red'>Subtotal </Badge>${total}
                   </Flex>
                 </Box>
-                <Button variant="outline" mr={3} >
+                <Button variant="outline" onClick={emptyCart} mr={3} >
                   Empty Cart
                 </Button>
                 <Button color="blue" onClick={() => {
@@ -97,7 +97,7 @@ export default function NavbarL(props) {
         <MenuList>
           {/* <Link to='/'> */}
           <MenuItem onClick={() => {
-            unAuth();
+            logout();
             toast({
               title: "Logged out!",
               description: `You have logged out of your account.`,

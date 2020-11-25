@@ -1,12 +1,15 @@
+const bcrypt = require('bcryptjs');
 const db = require('../../db/db.js');
 const { models } = require('../../db/db');
+
+const SALT_WORK_FACTOR = 10;
 
 const custController = {};
 
 // new customer signs up
 custController.createUser = async (req, res, next) => {
   // const { email, password } = req.body;
-  const {
+  let {
     first_name,
     last_name,
     email,
@@ -17,6 +20,8 @@ custController.createUser = async (req, res, next) => {
   } = req.body;
 
   try {
+    password = await bcrypt.hash(password, SALT_WORK_FACTOR);
+
     const newUser = await models.User.create({
       first_name,
       last_name,
@@ -42,7 +47,7 @@ custController.createUser = async (req, res, next) => {
 // customer signs in and cart loads 'get' request
 custController.verifyCust = async (req, res, next) => {
   const { email, password } = req.body;
-  
+
   try {
     const user = await models.User.findOne({ where: { email: email } });
 
@@ -55,7 +60,9 @@ custController.verifyCust = async (req, res, next) => {
       });
     }
 
-    if (user.dataValues.password !== password) {
+    const isMatch = await bcrypt.compare(password, user.dataValues.password);
+
+    if (!isMatch) {
       return next({
         log: `custController.verifyCust: ERROR: Error getting the customer's information from the database.`,
         message: {

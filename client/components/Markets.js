@@ -78,10 +78,7 @@ export default function Markets(props) {
               {itemArr}
             </SimpleGrid>
             <AspectRatio width="50%" ratio={4 / 3}>
-              <iframe
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDKZcIZIpR-E3EQterjyMpqZF8dnMmp_VM&q=NY+NY"
-                alt="demo"
-              />
+            <iframe src={`https://www.google.com/maps/embed/v1/place?q=${props.state.user.address_zip}&key=AIzaSyDKZcIZIpR-E3EQterjyMpqZF8dnMmp_VM`} alt="demo"></iframe>
             </AspectRatio>
           </Flex>
         </Container>
