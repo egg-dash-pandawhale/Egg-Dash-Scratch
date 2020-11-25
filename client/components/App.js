@@ -17,7 +17,7 @@ function App() {
   }
 
   const [state, setState] = useState(defaultState);
-  console.log('this is state: ', state);
+  console.log('this is state from APP: ', state);
 
   const [map, setMap] = useState({
     toggled: false,
@@ -30,60 +30,12 @@ function App() {
     })
   }
 
-  function removeCartItem(productName) {
-    let newTotal = state.total;
-    let newCart = [];
-    //loop through all items in array
-    //if its not the product, we push into our new array
-    //else
-      //if the amount is 0, we simply don't add it to the new array
-      //if its not 0 then we decrement the amount and then add it
-      console.log('removeCartItem invoked')
-    let removedOne = false;
-    for (let i = 0; i < state.cart.length; i++) {
-      if (state.cart[i][1] !== productName) {
-        newCart.push(state.cart[i]);
-      } else {
-        if (removedOne) {
-          newCart.push(state.cart[i]);
-        } else {
-          console.log('newTotal', newTotal);
-          console.log('state.cart[i][2]',state.cart[i][2]);
-          newTotal -= state.cart[i][2];
-          console.log('should be 0', newTotal);
-          if (newTotal < .01) newTotal = 0;
-          if (state.cart[i][0] !== 1) {
-            let currentQuant = state.cart[i][0];
-            currentQuant -= 1;
-            state.cart[i][0] = currentQuant;
-            newCart.push(state.cart[i]);
-          }
-          removedOne = true;
-        }
-      }
-    }
-    console.log(JSON.stringify(newCart));
-    console.log(state.total);
-    setState({
-      ...state,
-      cart: newCart,
-      total: newTotal
-    })
-  }
-
   function emptyCart() {
     setState({
       ...state,
       cart: [],
       total: 0
     })
-    // const request = {
-    //   method: "DELETE",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ email: username, password: password }),
-    // };
-    // const response = await fetch("/cust/login", request);
-    // const data = await response.json();
   }
 
   async function logOut() {
@@ -106,8 +58,7 @@ function App() {
     setMap({ toggled: checker });
   }
 
-  async function addToCart(customer_id, product_id, quantity) {
-    console.log(customer_id, product_id, quantity)
+  async function updateCart(customer_id, product_id, quantity) {
     try {
       const res = await fetch('/cart', {
         method: "PUT",
@@ -119,9 +70,9 @@ function App() {
         ...state,
         cart: data,
       });
-      console.log('FROM addToCart', data)
+      console.log('FROM updateCart', data)
     } catch(e) {
-      console.log('Error from addToCart', e)
+      console.log('Error from updateCart', e)
     }
   }
 
@@ -181,7 +132,6 @@ function App() {
     };
     const response = await fetch('/cust/signup', request);
     const data = await response.json();
-    console.log("this is data from Signup:", data);
     setState({
       ...state,
       isLoggedIn: true,
@@ -204,13 +154,13 @@ function App() {
                 <div>
                   {map.toggled ? (
                     <div>
-                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
+                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} unAuth={unAuth}/>
                       <Markets version={true} state={state} id={state.user.id} setState={setState}/>
                     </div>
                   ) : (
                     <div>
-                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
-                      <Markets version={false} addToCart={addToCart} id={state.user.id} state={state} setState={setState}/>
+                      <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} unAuth={unAuth} updateCart={updateCart} state={state}/>
+                      <Markets version={false} updateCart={updateCart} id={state.user.id} state={state} setState={setState}/>
                     </div>
                   )}
                 </div>

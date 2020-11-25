@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import Item from "./Item";
 export default function Markets(props) {
-  const { version, addToCart, id } = props;
+  const { version, updateCart, id } = props;
 
   const [store, setStore] = useState([]);
   console.log('store from markets', store);
@@ -66,7 +66,7 @@ export default function Markets(props) {
 
 
   const itemArr = store.map(e=>{
-    return <Item key={e.id} addToCart={addToCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
+    return <Item key={e.id} updateCart={updateCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
   })
 
   return (

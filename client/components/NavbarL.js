@@ -37,11 +37,11 @@ export default function NavbarL(props) {
 
 
   // const [subtotal, changeSubtotal] = useState('0.00');
-  const { toggled, cart, removeCartItem, unAuth} = props;
+  const { toggled, cart, removeCartItem, unAuth, updateCart, state} = props;
   // const cartArray = [];
 
   const cartArray = cart.map((e, i)=>{
-    return <CartItem key={i} quantity={e.quantity} product={e.Product.name} price={e.Product.price} description={e.Product.description} removeCartItem={removeCartItem}></CartItem>
+    return <CartItem key={e.Product.id} quantity={e.quantity} product={e.Product.name} id={e.Product.id} price={e.Product.price} description={e.Product.description} state={state} updateCart={updateCart}></CartItem>
   })
 
   console.log(cartArray)
