@@ -7,6 +7,8 @@ const custRouter = require('./routes/cust');
 const productsRouter = require('./routes/products');
 const cartRouter = require('./routes/cart');
 
+const { instance } = require('../db/db');
+
 const port = 3000;
 
 // Body Parser Middleware
@@ -34,14 +36,16 @@ app.use((err, req, res, next) => {
     status: 400,
     message: { err: 'An error occurred' },
   };
-  const errorObj = Object.assign({}, defaultErr, err);
+  const errorObj = { ...defaultErr, ...err };
   console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 
 // start server
-app.listen(port, () => {
-  console.log(`Server started on port ${port}.`);
+instance.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}.`);
+  });
 });
 
 module.exports = app;

@@ -10,17 +10,14 @@ import Markets from "./Markets";
 
 function App() {
   const defaultState = {
-    verified: false,
+    user: {},
     cart: [],
-    address_number: '',
-    address_street: '',
-    address_zip: '',
     total: 0,
-    id: '',
-    email: ''
-  };
+    isLoggedIn: false
+  }
 
   const [state, setState] = useState(defaultState);
+  console.log('this is state: ', state);
 
   const [map, setMap] = useState({
     toggled: false,
@@ -47,7 +44,7 @@ function App() {
   function unAuth() {
     setState({
       ...state,
-      verified: false
+      isLoggedIn: false
     })
   }
 
@@ -167,14 +164,14 @@ function App() {
     };
     const response = await fetch("/cust/login", request);
     const data = await response.json();
-    console.log("this is data:", data);
+    console.log("this is data from login:", data);
     let toReturn = false;
 
     if (data) {
       setState({
         ...state,
-        verified: true,
-        id: data.custInfo[0].id,
+        isLoggedIn: true,
+        id: data.user.id,
         email: username,
       });
       toReturn = true;
@@ -215,10 +212,10 @@ function App() {
     };
     const response = await fetch('/cust/signup', request);
     const data = await response.json();
-    console.log("this is data:", data);
+    console.log("this is data from Signup:", data);
     setState({
       ...state,
-      verified: true,
+      isLoggedIn: true,
       address_number: addNum,
       address_street: addSt,
       address_zip: addZip,
@@ -228,7 +225,7 @@ function App() {
 
   return (
     <div>
-      {state.verified ? (
+      {state.isLoggedIn ? (
         <Switch>
           <Route
             path="/"
@@ -244,7 +241,7 @@ function App() {
                   ) : (
                     <div>
                       <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
-                      <Markets version={false} addToCart={addToCart} email={state.email} instantiateCart={instantiateCart}/>
+                      <Markets version={false} addToCart={addToCart} id={state.id} instantiateCart={instantiateCart}/>
                     </div>
                   )}
                 </div>

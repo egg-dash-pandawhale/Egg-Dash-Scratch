@@ -7,13 +7,12 @@ const custController = require('../controllers/custController');
 
 // customer signs up
 router.post('/signup', custController.createUser, (req, res) => {
-  console.log('sign up worked, entered middleware');
-  res.status(200).json('the sign up fucking worked!');
+  res.statusStatus(200);
 });
 
 // customer signs in and cart loads 'get' request
 router.post('/login', custController.verifyCust, (req, res) => {
-  res.status(200).json(res.locals);
+  res.status(200).json({ user: res.locals.user });
 });
 
 // customer deletes their login (Stretch feature)
