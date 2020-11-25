@@ -106,14 +106,23 @@ function App() {
     setMap({ toggled: checker });
   }
 
-  function addToCart(customer_id, product_id, quantity) {
-    fetch('/cart', {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ customer_id, product_id, quantity }),
-    }).then(response => response.json())
-    .then(data => console.log(data))
-    .catch(e=>console.log(e))
+  async function addToCart(customer_id, product_id, quantity) {
+    console.log(customer_id, product_id, quantity)
+    try {
+      const res = await fetch('/cart', {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ customer_id, product_id, quantity }),
+      })
+      const data = await res.json()
+      setState({
+        ...state,
+        cart: data,
+      });
+      console.log('FROM addToCart', data)
+    } catch(e) {
+      console.log('Error from addToCart', e)
+    }
   }
 
   // This will be async.

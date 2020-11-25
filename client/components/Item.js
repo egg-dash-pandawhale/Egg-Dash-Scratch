@@ -61,12 +61,6 @@ export default function Item(props) {
 
   const toast = useToast();
 
-  function clicked() {
-    console.log(props.state.cart);
-    addToCart(state.quantity, state.productName, state.price, state.description, state.productId);
-    return;
-  }
-
   return (
     <Box>
       <Flex direction='column' justify='center' align='center'>
@@ -106,7 +100,7 @@ export default function Item(props) {
       <br />
       <Center>
         <Button size="md" onClick={() => {
-          clicked()
+          addToCart(props.state.user.id, state.productId, state.quantity);
           toast({
             title: "Added to cart!",
             description: `Added ${state.quantity} ${state.productName} to cart.`,

@@ -39,6 +39,7 @@ cartController.updateUserCart = async (req, res, next) => {
   const { customer_id, product_id, quantity } = req.body;
   const UserId = customer_id;
   const ProductId = product_id;
+  req.params = {id: customer_id}
   // check if product is already in the cart, i.e., the row should just be updated
   // if so, just update the quantity
   // if not, create a new row on the table
@@ -61,6 +62,7 @@ cartController.updateUserCart = async (req, res, next) => {
         ProductId,
         quantity,
       });
+      console.log('newlyAddedItem:', newlyAddedItem)
     } else if (quantity > 0) {
       // otherwise, update the row with the new quantity from the request body
       const updatedItem = await models.Cart.update(
@@ -73,6 +75,7 @@ cartController.updateUserCart = async (req, res, next) => {
           returning: true,
         }
       );
+      console.log("updatedItem: ", updatedItem)
       // uncomment the line below to see the updated item
       // console.log(updatedItem[1][0].dataValues);
     } else {
