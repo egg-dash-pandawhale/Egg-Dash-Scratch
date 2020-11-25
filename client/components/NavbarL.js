@@ -39,23 +39,13 @@ export default function NavbarL(props) {
 
   // const [subtotal, changeSubtotal] = useState('0.00');
   const { toggled, cart, removeCartItem, unAuth} = props;
-  const cartArray = [];
+  // const cartArray = [];
 
-  for (let i = 0; i < cart.length; i++) {
-    cartArray.push(<CartItem
-      key={i}
-      // this needs to be dynamic
-      quantity={cart[i][0]}
-      // here's another but of cart-array
-      product={cart[i][1]}
-      price={cart[i][2]}
-      description={cart[i][3]}
-      removeCartItem ={removeCartItem}
-    />)
+  const cartArray = cart.map((e, i)=>{
+    return <CartItem key={i} quantity={e.quantity} product={e.Product.name} price={e.Product.price} description={e.Product.description} removeCartItem={removeCartItem}></CartItem>
+  })
 
-  }
-
-  //quantity, product, price, description
+  console.log(cartArray)
 
   return (
     <div className="navbarL">

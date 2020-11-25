@@ -3,7 +3,6 @@ import { Box, Flex, Text, Button } from "@chakra-ui/react";
 export default function CartItem(props) {
   const { quantity, product, price, description, removeCartItem } = props;
 
-
   return (
     <Box>
       <Flex justify="space-between">

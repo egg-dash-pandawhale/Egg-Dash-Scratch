@@ -24,16 +24,12 @@ import {
 } from "@chakra-ui/react";
 import Item from "./Item";
 export default function Markets(props) {
-  const { version, addToCart, instantiateCart, id } = props;
+  const { version, addToCart, id } = props;
 
-  const defaultState = {
-    products: []
-  };
-
-  const [state, setState] = useState(defaultState);
+  const [store, setStore] = useState([]);
+  console.log('store from markets', store);
 
   useEffect(() => {
-    console.log(id);
     async function cart() {
       const request = {
         method: "GET",
@@ -42,12 +38,12 @@ export default function Markets(props) {
       const response = await fetch(`/cart/${id}`, request);
       const data = await response.json();
       console.log('this is data from cart login:', data);
-      for (let i = 0; i < data.length; i++) {
-        instantiateCart(data[i]);
-      }
+      props.setState({...props.state, cart: data})
     }
     cart();
+  }, [props.state.user.id]);
 
+  useEffect(()=> {
     async function me() {
       const request = {
         method: "GET",
@@ -55,33 +51,17 @@ export default function Markets(props) {
       };
       const response = await fetch("/products", request);
       const data = await response.json();
-      let marketItems = [];
-      for (let i = 0; i < data.length; i++) {
-        let marketItem = [];
-        marketItem.push(data[i].name, data[i].description, data[i].pictureurl, data[i].price, data[i].id, data[i].farm_id);
-        marketItems.push(marketItem);
-      }
-      setState({products: marketItems})
+      console.log('from MEEE', data)
+
+      setStore(data)
     }
     me();
+  }, [])
 
-  }, []);
 
-  const itemArr = [];
-
-  for (let i = 0; i < state.products.length; i++) {
-    itemArr.push(<Item
-      key={i}
-      addToCart={addToCart}
-      productName={state.products[i][0]}
-      productDescription={state.products[i][1]}
-      productPicture={state.products[i][2]}
-      productPrice={state.products[i][3]}
-      productId={state.products[i][4]}
-      farmId={state.products[i][5]}
-      />)
-  }
-
+  const itemArr = store.map(e=>{
+    return <Item key={e.id} addToCart={addToCart} productName={e.name} productDescription={e.description} state={props.state} setState={props.setState} productPicture={e.pictureurl} productPrice={e.price} productId={e.id} farmId={e.farm_id}></Item>
+  })
 
   return (
     <div>

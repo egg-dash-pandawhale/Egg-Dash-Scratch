@@ -23,24 +23,6 @@ function App() {
     toggled: false,
   });
 
-  // refactor: instead of new cart items being an array -- we make them objects
-  function instantiateCart(cartObj) {
-    let currentCart = state.cart;
-    let newcartItem = [];
-    // const newCartItem = {};
-    newcartItem.push( 1, cartObj.name, cartObj.price, cartObj.description, cartObj.productId)
-    // newCartItem.name = cartObj.name;
-    // newCartItem.price = cartObj.price;
-    // newCartItem.description = cartObj.description;
-    // newCartItem.productId = cartObj.productId;
-
-    currentCart.push(newcartItem);
-    setState ({
-      ...state,
-      cart: currentCart
-    })
-  }
-
   function unAuth() {
     setState({
       ...state,
@@ -124,43 +106,22 @@ function App() {
     setMap({ toggled: checker });
   }
 
-
-  function addToCart(quantity, product, price, description, productId) {
-    let currentCart = state.cart;
-    let newTotal = 0;
-
-    let productIdObj = {};
-    for (let i = 0; i < currentCart.length; i++) {
-      // each key value pair in productIdObject is the productId of products already in the cart by the index where the product is inside the cart
-      productIdObj[currentCart[i][4]] = i;
-    }
-    // if the productId argument is inside the productIdObject, meaning it's already inside the shopping cart,
-    if (productId in productIdObj) {
-      // productIdObj[productId] should return index of where the productId product is in within currentCart.
-      // find the quantity of the product that already exists in current cart and increment by quantity argument.
-      currentCart[productIdObj[productId]][0] = currentCart[productIdObj[productId]][0] + quantity;
-    } else {
-      // if the productid isnt already in there, push the brand new item into currentCart
-      currentCart.push([quantity, product, price, description, productId]);
-    }
-    
-    for (let i = 0; i < currentCart.length; i++) {
-      // this gets a new subtotal per item by multiplying quantity and price
-      newTotal += currentCart[i][0] * currentCart[i][2];
-    }
-    setState({
-      ...state,
-      cart: currentCart,
-      total: newTotal
-    });
+  function addToCart(customer_id, product_id, quantity) {
+    fetch('/cart', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ customer_id, product_id, quantity }),
+    }).then(response => response.json())
+    .then(data => console.log(data))
+    .catch(e=>console.log(e))
   }
 
   // This will be async.
-  async function loggedIn(username, password) {
+  async function loggedIn(email, password) {
     const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: username, password: password }),
+      body: JSON.stringify({ email: email, password: password }),
     };
     const response = await fetch("/cust/login", request);
     const data = await response.json();
@@ -170,9 +131,8 @@ function App() {
     if (data) {
       setState({
         ...state,
+        user: data,
         isLoggedIn: true,
-        id: data.user.id,
-        email: username,
       });
       toReturn = true;
     }
@@ -236,12 +196,12 @@ function App() {
                   {map.toggled ? (
                     <div>
                       <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
-                      <Markets version={true} addToCart={addToCart} email={state.email} instantiateCart={instantiateCart}/>
+                      <Markets version={true} state={state} id={state.user.id} setState={setState}/>
                     </div>
                   ) : (
                     <div>
                       <NavbarL toggled={toggled} cart={state.cart} total={state.total} emptyCart={emptyCart} removeCartItem={removeCartItem} unAuth={unAuth}/>
-                      <Markets version={false} addToCart={addToCart} id={state.id} instantiateCart={instantiateCart}/>
+                      <Markets version={false} addToCart={addToCart} id={state.user.id} state={state} setState={setState}/>
                     </div>
                   )}
                 </div>

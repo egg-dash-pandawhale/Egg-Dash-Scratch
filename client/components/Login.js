@@ -31,7 +31,6 @@ export default function LogIn({ loggedIn }) {
       ...state,
       username: field.target.value,
     });
-    console.log(state.username);
   }
 
   function passwordChange(field) {
@@ -39,7 +38,6 @@ export default function LogIn({ loggedIn }) {
       ...state,
       password: field.target.value,
     });
-    console.log(state.password);
   }
 
   function clicked() {
