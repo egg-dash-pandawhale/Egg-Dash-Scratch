@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Menu,
   MenuButton,
@@ -28,34 +28,17 @@ export default function NavbarL(props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
 
-  let { total, emptyCart } = props;
-  // format total to always show two decimal places
-  total = total.toFixed(2);
+  let { emptyCart } = props;
 
   const toast = useToast();
 
+  const { toggled, total, cart, updateCart, state, logout} = props;
 
+  const cartArray = cart.map((e, i)=>{
+    return <CartItem key={e.Product.id} quantity={e.quantity} product={e.Product.name} id={e.Product.id} price={e.Product.price} description={e.Product.description} state={state} updateCart={updateCart}></CartItem>
+  })
 
-
-  // const [subtotal, changeSubtotal] = useState('0.00');
-  const { toggled, cart, removeCartItem, unAuth} = props;
-  const cartArray = [];
-
-  for (let i = 0; i < cart.length; i++) {
-    cartArray.push(<CartItem
-      key={i}
-      // this needs to be dynamic
-      quantity={cart[i][0]}
-      // here's another but of cart-array
-      product={cart[i][1]}
-      price={cart[i][2]}
-      description={cart[i][3]}
-      removeCartItem ={removeCartItem}
-    />)
-
-  }
-
-  //quantity, product, price, description
+  console.log('Cart from NavbarL: ', cartArray)
 
   return (
     <div className="navbarL">
@@ -83,7 +66,7 @@ export default function NavbarL(props) {
                   <Badge colorScheme='red'>Subtotal </Badge>${total}
                   </Flex>
                 </Box>
-                <Button variant="outline" mr={3} >
+                <Button variant="outline" onClick={emptyCart} mr={3} >
                   Empty Cart
                 </Button>
                 <Button color="blue" onClick={() => {
@@ -114,7 +97,7 @@ export default function NavbarL(props) {
         <MenuList>
           {/* <Link to='/'> */}
           <MenuItem onClick={() => {
-            unAuth();
+            logout();
             toast({
               title: "Logged out!",
               description: `You have logged out of your account.`,

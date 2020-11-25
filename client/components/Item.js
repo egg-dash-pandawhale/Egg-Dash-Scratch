@@ -23,7 +23,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-export default function Item({ addToCart, productName, productDescription, productPicture, productPrice, productId, farmId }) {
+export default function Item(props) {
+  const { updateCart, productName, productDescription, productPicture, productPrice, productId, farmId } = props;
   const defaultState = {
     quantity: 1,
     productName: productName,
@@ -59,12 +60,6 @@ export default function Item({ addToCart, productName, productDescription, produ
   }
 
   const toast = useToast();
-
-  function clicked() {
-
-    addToCart(state.quantity, state.productName, state.price, state.description, state.productId);
-    return;
-  }
 
   return (
     <Box>
@@ -105,7 +100,7 @@ export default function Item({ addToCart, productName, productDescription, produ
       <br />
       <Center>
         <Button size="md" onClick={() => {
-          clicked()
+          updateCart(props.state.user.id, state.productId, state.quantity);
           toast({
             title: "Added to cart!",
             description: `Added ${state.quantity} ${state.productName} to cart.`,

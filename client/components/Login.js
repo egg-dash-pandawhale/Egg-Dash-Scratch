@@ -31,7 +31,6 @@ export default function LogIn({ loggedIn }) {
       ...state,
       username: field.target.value,
     });
-    console.log(state.username);
   }
 
   function passwordChange(field) {
@@ -39,7 +38,6 @@ export default function LogIn({ loggedIn }) {
       ...state,
       password: field.target.value,
     });
-    console.log(state.password);
   }
 
   function clicked() {
@@ -76,7 +74,7 @@ export default function LogIn({ loggedIn }) {
           </InputGroup>
           <InputGroup mt="10px" width="sm">
             <InputLeftAddon children="Password:" pr="20px" />
-            <Input variant="filled" onChange={passwordChange} />
+            <Input variant="filled" type="password" onChange={passwordChange} />
           </InputGroup>
           <Link to={"/"}>
             <Button

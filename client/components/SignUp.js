@@ -131,7 +131,7 @@ export default function SignUp({ signedUp }) {
           </InputGroup>
           <InputGroup mt="10px" width="sm">
             <InputLeftAddon children="Password:" pr="20px" />
-            <Input variant="filled" onChange={passwordChange} />
+            <Input variant="filled" type="password" onChange={passwordChange} />
           </InputGroup>
           <Link to={"/"}>
             <Button

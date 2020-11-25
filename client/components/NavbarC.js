@@ -22,7 +22,7 @@ export default function NavbarC(props) {
         </MenuButton>
         <MenuList>
           <Link to='/'>
-            <MenuItem>Log Out</MenuItem>
+            <MenuItem >Log Out</MenuItem>
           </Link>
         </MenuList>
       </Menu>

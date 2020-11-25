@@ -39,6 +39,7 @@ cartController.updateUserCart = async (req, res, next) => {
   const { customer_id, product_id, quantity } = req.body;
   const UserId = customer_id;
   const ProductId = product_id;
+  req.params = {id: customer_id}
   // check if product is already in the cart, i.e., the row should just be updated
   // if so, just update the quantity
   // if not, create a new row on the table
@@ -54,6 +55,7 @@ cartController.updateUserCart = async (req, res, next) => {
         ProductId,
       },
     });
+    console.log('item FOUND')
     // if we don't find the item in the Cart table, insert it into the table
     if (!item) {
       const newlyAddedItem = await models.Cart.create({
@@ -61,10 +63,17 @@ cartController.updateUserCart = async (req, res, next) => {
         ProductId,
         quantity,
       });
-    } else if (quantity > 0) {
-      // otherwise, update the row with the new quantity from the request body
+      console.log('newlyAddedItem:')
+    } else if (quantity === 0 || quantity + item.quantity === 0) {
+      await models.Cart.destroy({
+        where: {
+          UserId,
+          ProductId,
+        },
+      });
+    }else {
       const updatedItem = await models.Cart.update(
-        { quantity },
+        { quantity: quantity + item.quantity },
         {
           where: {
             UserId,
@@ -73,16 +82,8 @@ cartController.updateUserCart = async (req, res, next) => {
           returning: true,
         }
       );
-      // uncomment the line below to see the updated item
-      // console.log(updatedItem[1][0].dataValues);
-    } else {
-      await models.Cart.destroy({
-        where: {
-          UserId,
-          ProductId,
-        },
-      });
-    }
+      console.log("updatedItem: ", updatedItem)
+    } 
     return next();
   } catch (error) {
     return next({
